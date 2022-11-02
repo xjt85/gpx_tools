@@ -5,9 +5,6 @@ import csv
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from pandas.io.json import json_normalize
-import json
-import seaborn as sns
-import matplotlib.pyplot as plt
 from datetime import datetime
 
 with open("300км.gpx", "r", encoding="utf-8") as file:
@@ -22,13 +19,15 @@ for track in gpx.tracks:
 def get_track_distance(data):
     result = 0
     for i in range(len(data) - 1):
-        x_diff = round(abs(data[i][0] - data[i + 1][0]) * 111200, 2)
-        y_diff = round(abs(data[i][1] - data[i + 1][1]) * 111200, 2)
+
+        x_diff = round(abs(data[i][0] - data[i + 1][0]) * 111300 * math.cos(data[i][0] / 180 * 3.14), 2)
+        y_diff = round(abs(data[i][1] - data[i + 1][1]) * 111000, 2)
         z_diff = round(abs(data[i][2] - data[i + 1][2]), 2)
         # print(f'{x_diff}, {y_diff}, {z_diff}')
         result += math.sqrt(pow(x_diff, 2) + pow(y_diff, 2) + pow(z_diff, 2))
     return round(result, 2)
 
+print(f'Длина трека: {get_track_distance(data)}')
 
 # with open('result.csv', 'w', newline='') as csvfile:
 #     writer = csv.writer(csvfile, delimiter=' ',
@@ -41,7 +40,6 @@ def get_track_distance(data):
 
 
 
-print(get_track_distance(data))
 
 
 # with open('../input/strava-dataset-17-06-2022-1321/response.json', 'r', encoding='utf-8') as f:
